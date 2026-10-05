@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "anchor-legacy";
 import { AddressUtil } from "@solve3fi/common";
 import type { PublicKey } from "@solana/web3.js";
 import { METADATA_PROGRAM_ADDRESS } from "../../types/public";

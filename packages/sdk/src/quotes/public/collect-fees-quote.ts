@@ -1,4 +1,4 @@
-import type { BN } from "@coral-xyz/anchor";
+import type { BN } from "anchor-legacy";
 import { MathUtil } from "@solve3fi/common";
 import type { PositionData, TickData, SolveData } from "../../types/public";
 import type { TokenExtensionContextForPool } from "../../utils/public/token-extension-util";

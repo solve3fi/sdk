@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import { AddressUtil, TransactionBuilder } from "@solve3fi/common";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import invariant from "tiny-invariant";

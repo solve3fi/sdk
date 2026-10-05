@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "anchor-legacy";
 import { ZERO } from "@solve3fi/common";
 import { SwapErrorCode, SolvesError } from "../../errors/errors";
 import {

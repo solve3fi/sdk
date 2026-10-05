@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "anchor-legacy";
 import type { Percentage } from "@solve3fi/common";
 import { ZERO } from "@solve3fi/common";
 import invariant from "tiny-invariant";

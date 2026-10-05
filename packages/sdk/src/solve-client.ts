@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import type { Percentage, TransactionBuilder } from "@solve3fi/common";
 import type { PublicKey } from "@solana/web3.js";
 import type { SolveContext } from "./context";

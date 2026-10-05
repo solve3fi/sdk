@@ -1,4 +1,4 @@
-import type { Program } from "@coral-xyz/anchor";
+import type { Program } from "anchor-legacy";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { PublicKey } from "@solana/web3.js";
 import type BN from "bn.js";

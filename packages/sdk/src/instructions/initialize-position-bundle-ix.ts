@@ -1,5 +1,5 @@
-import * as anchor from "@coral-xyz/anchor";
-import type { Program } from "@coral-xyz/anchor";
+import * as anchor from "anchor-legacy";
+import type { Program } from "anchor-legacy";
 import type { Instruction, PDA } from "@solve3fi/common";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,

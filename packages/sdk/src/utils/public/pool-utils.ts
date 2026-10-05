@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import { AddressUtil, MathUtil, Percentage } from "@solve3fi/common";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";

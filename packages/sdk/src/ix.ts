@@ -1,4 +1,4 @@
-import type { Program } from "@coral-xyz/anchor";
+import type { Program } from "anchor-legacy";
 import type { PDA } from "@solve3fi/common";
 import type { Solve } from "./artifacts/solve";
 import * as ix from "./instructions";

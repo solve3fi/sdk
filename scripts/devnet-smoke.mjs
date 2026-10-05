@@ -5,7 +5,7 @@
 import { createRequire } from "node:module";
 import fs from "node:fs";
 const require = createRequire(import.meta.url);
-const { Wallet, BN } = require("../packages/sdk/node_modules/@coral-xyz/anchor");
+const { Wallet, BN } = require("../packages/sdk/node_modules/anchor-legacy");
 const { Connection, Keypair, PublicKey } = require("../packages/sdk/node_modules/@solana/web3.js");
 const Decimal = require("../packages/sdk/node_modules/decimal.js");
 const common = require("../packages/common");

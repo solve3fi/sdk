@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import type { PDA } from "@solve3fi/common";
 import { AddressUtil } from "@solve3fi/common";
 import type { PublicKey } from "@solana/web3.js";

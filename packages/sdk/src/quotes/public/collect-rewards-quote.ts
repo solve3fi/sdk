@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "anchor-legacy";
 import { MathUtil } from "@solve3fi/common";
 import invariant from "tiny-invariant";
 import type { PositionData, TickData, SolveData } from "../../types/public";

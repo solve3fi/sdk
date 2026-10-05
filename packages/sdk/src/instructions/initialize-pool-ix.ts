@@ -1,4 +1,4 @@
-import type { BN, Program } from "@coral-xyz/anchor";
+import type { BN, Program } from "anchor-legacy";
 import type { Instruction, PDA } from "@solve3fi/common";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { Keypair, PublicKey } from "@solana/web3.js";

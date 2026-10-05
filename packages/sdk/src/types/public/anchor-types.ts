@@ -1,5 +1,5 @@
-import type { BN, Idl } from "@coral-xyz/anchor";
-import { BorshAccountsCoder } from "@coral-xyz/anchor";
+import type { BN, Idl } from "anchor-legacy";
+import { BorshAccountsCoder } from "anchor-legacy";
 import type { PublicKey } from "@solana/web3.js";
 import SolveIDL from "../../artifacts/solve.json";
 

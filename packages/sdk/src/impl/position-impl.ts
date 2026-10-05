@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import type {
   Instruction,
   ResolvedTokenAddressInstruction,

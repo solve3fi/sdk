@@ -1,4 +1,4 @@
-import type { Program } from "@coral-xyz/anchor";
+import type { Program } from "anchor-legacy";
 import type { Instruction, PDA } from "@solve3fi/common";
 import type { PublicKey } from "@solana/web3.js";
 import { SOLVE_NFT_UPDATE_AUTH } from "..";

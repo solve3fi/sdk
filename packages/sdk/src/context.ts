@@ -1,5 +1,5 @@
-import type { Idl } from "@coral-xyz/anchor";
-import { AnchorProvider, Program } from "@coral-xyz/anchor";
+import type { Idl } from "anchor-legacy";
+import { AnchorProvider, Program } from "anchor-legacy";
 import type {
   BuildOptions,
   LookupTableFetcher,

@@ -1,5 +1,5 @@
-import * as anchor from "@coral-xyz/anchor";
-import type { Program } from "@coral-xyz/anchor";
+import * as anchor from "anchor-legacy";
+import type { Program } from "anchor-legacy";
 import type { Instruction, PDA } from "@solve3fi/common";
 import type { PublicKey } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";

@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import type { Percentage } from "@solve3fi/common";
 import type BN from "bn.js";
 import { SwapErrorCode, SolvesError } from "../../errors/errors";

@@ -1,5 +1,5 @@
-import type { Address } from "@coral-xyz/anchor";
-import { BN, translateAddress } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
+import { BN, translateAddress } from "anchor-legacy";
 import type { Percentage } from "@solve3fi/common";
 import {
   AddressUtil,

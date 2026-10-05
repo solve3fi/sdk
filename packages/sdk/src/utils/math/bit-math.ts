@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "anchor-legacy";
 import { MathUtil, ONE, TWO, U64_MAX, ZERO } from "@solve3fi/common";
 import { MathErrorCode, SolvesError } from "../../errors/errors";
 

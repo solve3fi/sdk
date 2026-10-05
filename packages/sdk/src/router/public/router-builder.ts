@@ -1,4 +1,4 @@
-import type { Address } from "@coral-xyz/anchor";
+import type { Address } from "anchor-legacy";
 import type { SolveRouter } from ".";
 import type { SolveContext } from "../..";
 import type { PoolGraph } from "../../utils/public";

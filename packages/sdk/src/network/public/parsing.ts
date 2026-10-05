@@ -1,5 +1,5 @@
-import type { Idl } from "@coral-xyz/anchor";
-import { BorshAccountsCoder } from "@coral-xyz/anchor";
+import type { Idl } from "anchor-legacy";
+import { BorshAccountsCoder } from "anchor-legacy";
 import type { ParsableEntity } from "@solve3fi/common";
 import { staticImplements } from "@solve3fi/common";
 import type { AccountInfo, PublicKey } from "@solana/web3.js";

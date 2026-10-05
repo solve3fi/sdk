@@ -1,4 +1,4 @@
-import type { BN } from "@coral-xyz/anchor";
+import type { BN } from "anchor-legacy";
 import type { Percentage } from "@solve3fi/common";
 import { MathUtil } from "@solve3fi/common";
 import { PriceMath } from "./public";
