@@ -94,11 +94,12 @@ export const PROTOCOL_FEE_RATE_MUL_VALUE = new BN(10_000);
 export const FEE_RATE_MUL_VALUE = new BN(1_000_000);
 
 /**
- * The public key that is allowed to update the metadata of Solve NFTs.
+ * The public key that is allowed to update the metadata of Solve NFTs. This is the address the Solve program
+ * itself requires (programs/solve/src/constants/nft.rs, solve_nft_update_auth), not the upstream default.
  * @category Constants
  */
 export const SOLVE_NFT_UPDATE_AUTH = new PublicKey(
-  "3axbTs2z5GBy6usVbNVoqEgZMng3vZvMnAoX29BFfwhr",
+  "Bbx8tpTG9fTnE5CXjZLys9gQi1i4nDUFn6MrU4Gby14J",
 );
 
 /**
