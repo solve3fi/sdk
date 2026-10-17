@@ -49,7 +49,7 @@ const PROGRAM = new PublicKey(args.program ?? process.env.SOLVE3_DEX ?? "HnosXNW
 const USDC = new PublicKey(args.usdc ?? net.usdc);
 const TICK_SPACING = Number(args["tick-spacing"] ?? 8);
 const FEE_RATE = Number(args["fee-rate"] ?? 500); // hundredths of a basis point: 500 = 0.05%
-const PROTOCOL_FEE_RATE = Number(args["protocol-fee-rate"] ?? 2000); // basis points of the fee: 2000 = 20% to Treasury
+const PROTOCOL_FEE_RATE = Number(args["protocol-fee-rate"] ?? 500); // basis points of the fee: 500 = 5% to Treasury, 95% to LPs
 const TICK_ARRAYS_EACH_SIDE = Number(args["tick-arrays-each-side"] ?? 1);
 const offline = Boolean(args.offline);
 const execute = Boolean(args.execute);

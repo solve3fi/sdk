@@ -22,7 +22,7 @@ One atomic transaction (about 1,044 bytes, so a failure leaves nothing behind):
 | Fee authority | Dev account `HGUP…sq6o`: creates fee tiers, sets fee rates, pauses trading |
 | Collect-protocol-fees authority | Treasury `HRmz…NXNV`: the only key that can withdraw protocol fees |
 | Reward emissions super authority | Dev account |
-| Default protocol fee rate | 2,000 = 20% of each swap fee (`--protocol-fee-rate`, program cap 8,000) |
+| Default protocol fee rate | 500 = 5% of each swap fee (95% to LPs) (`--protocol-fee-rate`, program cap 8,000) |
 | Fee tier | tick spacing 8, fee rate 500 = 0.05% (the frontend's existing 0.05% tier) |
 | Pool | wSOL (token A) / USDC (token B) at `--price` USDC per SOL |
 | Tick arrays | the one holding the price and one each side, about ±7% (`--tick-arrays-each-side`) |
@@ -31,7 +31,7 @@ Rent is about 0.23 SOL, almost all of it the three tick arrays (about 0.07 SOL e
 
 ## How fees reach the Treasury
 
-Each swap pays 0.05%. The protocol share (20% by default) accrues in the pool as protocol fees owed; the other 80%
+Each swap pays 0.05%. The protocol share (5% by default) accrues in the pool as protocol fees owed; the other 95%
 goes to in-range liquidity providers, which at launch is only the Dev account's position. The Treasury collects
 protocol fees with `collect_protocol_fees`, signed by the Treasury, into its own SOL and USDC token accounts.
 The fee authority (Dev) can change a pool's share later with `set_protocol_fee_rate`.
