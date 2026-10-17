@@ -23,7 +23,7 @@ const web3 = require("../packages/sdk/node_modules/@solana/web3.js");
 const Decimal = require("../packages/sdk/node_modules/decimal.js");
 const common = require("../packages/common");
 const sdk = require("../packages/sdk");
-const { Connection, Keypair, PublicKey, Transaction, ComputeBudgetProgram } = web3;
+const { Connection, Keypair, PublicKey, Transaction, VersionedTransaction, ComputeBudgetProgram } = web3;
 const { SolveContext, SolveIx, PDAUtil, PoolUtil, PriceMath, TickUtil, buildSolveClient, IGNORE_CACHE } = sdk;
 
 const DEV = new PublicKey("HGUPXpPUhD6PiTSWexebRSsgCT1uDAgiKk2DvdRHsq6o");
@@ -216,7 +216,9 @@ for (const step of steps) {
 	console.log(`\n${step.label}: ${bytes} bytes (limit 1232)`);
 	if (bytes > 1232) fail("transaction too large");
 	if (offline) continue;
-	const sim = await connection.simulateTransaction(tx, { sigVerify: false, replaceRecentBlockhash: true });
+	// web3.js only accepts a simulation config with a versioned transaction
+	const simTx = tx instanceof VersionedTransaction ? tx : new VersionedTransaction(tx.compileMessage());
+	const sim = await connection.simulateTransaction(simTx, { sigVerify: false, replaceRecentBlockhash: true });
 	if (sim.value.err) {
 		console.log(sim.value.logs?.join("\n"));
 		fail(`simulation failed: ${JSON.stringify(sim.value.err)}`);
