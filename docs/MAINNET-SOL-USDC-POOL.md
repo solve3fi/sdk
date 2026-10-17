@@ -56,3 +56,15 @@ program is deployed, and simulates every transaction before sending. `--cluster 
 against devnet with Circle's devnet USDC. The keypair is read from a file and never printed.
 
 After creation, set the pool address in the frontend, the arb bot and the volume bot.
+
+## Changing the pool fee
+
+The fee authority is the Dev account in Phantom, so fee changes are signed in the browser.
+[`scripts/set-pool-fee-rate.mjs`](../scripts/set-pool-fee-rate.mjs) simulates `set_fee_rate`, then serves a page on
+`http://localhost:8787` that asks Phantom to sign and send it, and prints the new fee once it is finalized:
+
+```sh
+SOLANA_RPC_URL=$(cat ~/.solve3-mainnet-rpc.txt) node scripts/set-pool-fee-rate.mjs --fee-rate 400   # 0.04%
+```
+
+The pool address stays the same; only the pool's own fee changes (the 0.05% fee tier remains the default for new pools).
