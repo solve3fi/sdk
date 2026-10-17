@@ -12,7 +12,9 @@
 //   ... --cluster mainnet-beta --deposit-usdc 500 --range-pct 10 --execute           # first position
 //
 // The signer keypair is read from SOLVE3_KEYPAIR and never printed. On mainnet-beta it must be the
-// Dev account, and --execute also needs SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool.
+// Dev account or the deployer key; --execute also needs SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool.
+// When the deployer key signs, the same transaction hands the fee and reward-emissions authorities to
+// the Dev account, so the Dev account (a browser wallet) ends up in control without signing here.
 import { createRequire } from "node:module";
 import fs from "node:fs";
 const require = createRequire(import.meta.url);
@@ -25,6 +27,7 @@ const { Connection, Keypair, PublicKey, Transaction, ComputeBudgetProgram } = we
 const { SolveContext, SolveIx, PDAUtil, PoolUtil, PriceMath, TickUtil, buildSolveClient, IGNORE_CACHE } = sdk;
 
 const DEV = new PublicKey("HGUPXpPUhD6PiTSWexebRSsgCT1uDAgiKk2DvdRHsq6o");
+const DEPLOYER = new PublicKey("4j3VFftvWC4R2KxbF4R8bJKz2Mxk3m6a2RjkEu8ySVPs");
 const TREASURY = new PublicKey("HRmz8NhLJDXYiSyR6STzBkofJZGb9ZMbbEh3rMHRVXNV");
 const WSOL = new PublicKey("So11111111111111111111111111111111111111112");
 const CLUSTERS = {
@@ -57,14 +60,16 @@ if (offline && execute) fail("--offline and --execute cannot be combined");
 if (PROTOCOL_FEE_RATE > 8000) fail("the program caps the default protocol fee rate at 8000");
 
 const signer = offline ? null : loadKeypair(process.env.SOLVE3_KEYPAIR);
-const payer = signer?.publicKey ?? DEV;
+const payer = signer?.publicKey ?? DEPLOYER;
 const connection = new Connection(process.env.SOLANA_RPC_URL ?? net.rpc, "confirmed");
 const ctx = SolveContext.from(connection, new Wallet(signer ?? Keypair.generate()), PROGRAM);
 
 if (!offline) {
 	const genesis = await connection.getGenesisHash();
 	if (genesis !== net.genesis) fail(`RPC genesis ${genesis} is not ${cluster}`);
-	if (cluster === "mainnet-beta" && !payer.equals(DEV)) fail(`signer ${payer.toBase58()} is not the Dev account`);
+	if (cluster === "mainnet-beta" && !payer.equals(DEV) && !payer.equals(DEPLOYER)) {
+		fail(`signer ${payer.toBase58()} is neither the Dev account nor the deployer key`);
+	}
 	if (execute && cluster === "mainnet-beta" && process.env.SOLVE3_CONFIRM_MAINNET !== "create-sol-usdc-pool") {
 		fail("set SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool to send on mainnet-beta");
 	}
@@ -89,9 +94,9 @@ const plan = {
 	program: PROGRAM.toBase58(),
 	payer: payer.toBase58(),
 	solvesConfig: CONFIG.toBase58(),
-	feeAuthority: payer.toBase58(),
+	feeAuthority: DEV.toBase58(),
 	collectProtocolFeesAuthority: TREASURY.toBase58(),
-	rewardEmissionsSuperAuthority: payer.toBase58(),
+	rewardEmissionsSuperAuthority: DEV.toBase58(),
 	defaultProtocolFeeRate: `${PROTOCOL_FEE_RATE} (${PROTOCOL_FEE_RATE / 100}% of each swap fee to the protocol)`,
 	feeTier: { address: feeTier.publicKey.toBase58(), tickSpacing: TICK_SPACING, feeRate: `${FEE_RATE} (${FEE_RATE / 10000}%)` },
 	pool: solvePda.publicKey.toBase58(),
@@ -126,7 +131,7 @@ if (!existing.get(solvePda.publicKey.toBase58())) {
 		signers.push(...ix.signers);
 	}
 	if (!existing.get(feeTier.publicKey.toBase58())) {
-		// The fee tier must be signed by the config's fee authority: the payer, which on mainnet is the Dev account.
+		// The fee tier must be signed by the config's fee authority, which is the payer until the handover below.
 		const ix = SolveIx.initializeFeeTierIx(ctx.program, {
 			solvesConfig: CONFIG,
 			feeTierPda: feeTier,
@@ -160,6 +165,17 @@ if (!existing.get(solvePda.publicKey.toBase58())) {
 		const ix = SolveIx.initTickArrayIx(ctx.program, { startTick, tickArrayPda, solve: solvePda.publicKey, funder: payer });
 		ixs.push(...ix.instructions);
 		plan.tickArrays.push({ startTick, address: tickArrayPda.publicKey.toBase58() });
+	}
+	if (!existing.get(CONFIG.toBase58()) && !payer.equals(DEV)) {
+		ixs.push(
+			...SolveIx.setFeeAuthorityIx(ctx.program, { solvesConfig: CONFIG, feeAuthority: payer, newFeeAuthority: DEV }).instructions,
+			...SolveIx.setRewardEmissionsSuperAuthorityIx(ctx.program, {
+				solvesConfig: CONFIG,
+				rewardEmissionsSuperAuthority: payer,
+				newRewardEmissionsSuperAuthority: DEV,
+			}).instructions,
+		);
+		plan.handover = `fee and reward-emissions authorities move from ${payer.toBase58()} to the Dev account`;
 	}
 	steps.push({ label: "create config, fee tier, pool and tick arrays", ixs, signers });
 } else {

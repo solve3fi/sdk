@@ -1,6 +1,6 @@
 # Mainnet SOL/USDC pool
 
-The first Solve3 mainnet pool: SOL/USDC, 0.05% swap fee (tick spacing 8), created from the Dev account by
+The first Solve3 mainnet pool: SOL/USDC, 0.05% swap fee (tick spacing 8), created by
 [`scripts/mainnet-sol-usdc-pool.mjs`](../scripts/mainnet-sol-usdc-pool.mjs). Nothing here is on mainnet yet.
 
 ## Before the pool: the program
@@ -14,7 +14,9 @@ The Solve program is not on mainnet. The old mainnet program was closed, and the
 
 ## What the script creates
 
-One atomic transaction (about 1,044 bytes, so a failure leaves nothing behind):
+One atomic transaction (about 1,104 bytes, so a failure leaves nothing behind). It is signed by the deployer key
+`4j3V…ySVPs`, a keypair file; the Dev account lives in a browser wallet, so the same transaction hands the fee and
+reward-emissions authorities to it at the end. Signing with a Dev account keypair file also works and skips the handover.
 
 | Account | Value |
 | --- | --- |
@@ -41,15 +43,15 @@ The fee authority (Dev) can change a pool's share later with `set_protocol_fee_r
 ```sh
 cd sdk && bun install && bun run build
 node scripts/mainnet-sol-usdc-pool.mjs --offline --price 180                  # build only, no RPC
-SOLVE3_KEYPAIR=~/dev.json node scripts/mainnet-sol-usdc-pool.mjs --price 180   # simulate on mainnet, sends nothing
-SOLVE3_KEYPAIR=~/dev.json SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool \
+SOLVE3_KEYPAIR=~/.solve3-devnet-keys/id.json node scripts/mainnet-sol-usdc-pool.mjs --price 180   # simulate on mainnet, sends nothing
+SOLVE3_KEYPAIR=~/.solve3-devnet-keys/id.json SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool \
   node scripts/mainnet-sol-usdc-pool.mjs --price 180 --execute                 # create the pool
-SOLVE3_KEYPAIR=~/dev.json SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool \
+SOLVE3_KEYPAIR=~/.solve3-devnet-keys/id.json SOLVE3_CONFIRM_MAINNET=create-sol-usdc-pool \
   node scripts/mainnet-sol-usdc-pool.mjs --deposit-usdc 500 --range-pct 10 --execute   # first position
 ```
 
 Use the current market price for `--price`; arbitrage moves any gap at the liquidity provider's expense.
-On mainnet the script refuses any signer other than the Dev account, checks the RPC's genesis hash and that the
+On mainnet the script refuses any signer other than the deployer key or the Dev account, checks the RPC's genesis hash and that the
 program is deployed, and simulates every transaction before sending. `--cluster devnet` runs the same steps
 against devnet with Circle's devnet USDC. The keypair is read from a file and never printed.
 
